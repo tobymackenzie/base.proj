@@ -1,12 +1,25 @@
 #!/usr/bin/env bash
+
 if [ "$#" -eq 0 ]; then
 	>&2 echo "Usage: $0 directory […project_type]"
 	exit 1
 fi
+
+#--determine src dir
 #-@ https://stackoverflow.com/a/246128
-srcDir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"/../src/"
+scriptPath=${BASH_SOURCE[0]}
+while [ -L "$scriptPath" ]; do
+	scriptDir=$(cd -P "$(dirname "$scriptPath")" >/dev/null 2>&1 && pwd)
+	scriptPath=$(readlink "$scriptPath")
+	[[ $scriptPath != /* ]] && scriptPath=$scriptDir/$scriptPath
+done
+srcDir=$(cd -P "$(dirname "$scriptPath")" >/dev/null 2>&1 && pwd)"/../src/"
+
+#--make project dir, move into it
 mkdir -p "${1}"
 cd "${1}"
+
+#--copy type files into place
 rsync -Dglopr "${srcDir}/base/" .
 for (( i=2; i <= $#; ++i )); do
 	src="${srcDir}/${!i}/"
