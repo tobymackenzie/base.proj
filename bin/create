@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+if [ "$#" -eq 0 ]; then
+	>&2 echo "Usage: $0 directory […project_type]"
+	exit 1
+fi
+#-@ https://stackoverflow.com/a/246128
+srcDir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"/../src/"
+mkdir -p "${1}"
+cd "${1}"
+rsync -Dglopr "${srcDir}/base/" .
+for (( i=2; i <= $#; ++i )); do
+	src="${srcDir}/${!i}/"
+	if [[ -d $src ]]; then
+		rsync -Dglopr $src .
+	else
+		>&2 echo "project type \"${!i}\" not found"
+	fi
+done
