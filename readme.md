@@ -14,5 +14,5 @@ Requires `bash` executable to exist locally as well as `rsync` and `mkdir` comma
 Early stages, usage and files subject to change.
 
 <footer>
-<p>SPDX-License-Identifier: 0BSD</p>
+<p>SPDX-License-Identifier: 0BSD OR Unlicense OR CC0-1.0</p>
 </footer>

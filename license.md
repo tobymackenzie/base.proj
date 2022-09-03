@@ -1,9 +1,13 @@
-SPDX-License-Identifier: 0BSD
+SPDX-License-Identifier: 0BSD OR Unlicense OR CC0-1.0
+Copyright 2022 by Toby Mackenzie
+No rights reserved
 
-BSD Zero Clause License
+This work, its contents, and any portion thereof, is free and open source, dedicated to the public benefit, and freely licensed to use, copy, modify, and distribute in any way, for any purpose, by anyone.
 
-Copyright (c) 2022 by Toby Mackenzie <public@tobymackenzie.com>
+This work is designed for the authors' purposes, and is provided to others AS-IS, with NO WARRANTY OF ANY KIND.  NO AUTHORS SHALL BE HELD LIABLE FOR ANY REASON arising from, out of, or in connection with the work or its use, to the maximum extent allowable by law.
 
-Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.
+For maximum freedom to use this work, it may be used under any one of the following standard licenses, as if their text replaced the text of this file:
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+- BSD Zero Clause License, see <https://spdx.org/licenses/0BSD.html>
+- Unlicense, see <https://spdx.org/licenses/Unlicense.html>
+- Creative Commons Zero v1.0 Universal License, see <https://spdx.org/licenses/CC0-1.0.html>
