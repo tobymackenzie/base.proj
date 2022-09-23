@@ -1,0 +1,1 @@
+../../../vendor/wordpress/wp-content/themes/index.php

@@ -1,0 +1,182 @@
+##=====
+#==security
+##=====
+##--don't sniff mime type (IE and Chrome)
+#-@ https://scotthelme.co.uk/hardening-your-http-response-headers/#x-content-type-options
+Header always set X-Content-Type-Options 'nosniff'
+
+##--block execution of php in uploads directories
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteRule ^_content/uploads/.*\.php$ - [F,L,NC]
+</IfModule>
+
+##=====
+#==rewrites
+#=====
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+
+	##==canonical domain
+	#-! temporarily 302 until decision on yes or no www is final
+	RewriteCond %{REQUEST_URI} !^/?\.well-known
+	RewriteCond %{HTTP_HOST} ^.+\.tobymackenzie\.com$ [NC]
+	RewriteRule ^ %{REQUEST_SCHEME}://tobymackenzie.com%{QUERY_STRING} [L,R=302,QSA]
+
+	##==maintenance
+	#-! show maintenance until we go live with wordpress
+	#RewriteCond %{REQUEST_URI} !^/?\.well-known
+	#RewriteCond %{HTTP_COOKIE} !^(.*;)?\ ?54321=98765\ ?(;.*)?$
+	#RewriteCond %{ENV:REDIRECT_STATUS} !=503
+	#RewriteCond %{REQUEST_URI} !^/?12345/?$
+	#RewriteRule ^ - [L,R=503]
+	# ErrorDocument 503 /_maintenance.html
+	#Header Set Cache-Control "max-age=0, no-store"
+
+	##==block admin access to others
+	#--set cookie on live site
+	RewriteCond %{HTTP_HOST} ^(www\.)?tobymackenzie\.com$ [NC]
+	RewriteCond %{HTTPS} =on
+	RewriteRule ^/?12345$ /_wp/wp-admin/ [CO=54321:98765:%{HTTP_HOST}:0:/:secure:httponly,END,R=302]
+	#--set cookie on dev site
+	RewriteRule ^/?12345$ /_wp/wp-admin/ [CO=54321:98765:%{HTTP_HOST}:0:/:insecure:httponly,END,R=302]
+	#--block unless cookie is set
+	RewriteCond %{HTTP_COOKIE} !^(.*;)?\ ?54321=98765\ ?(;.*)?$
+	RewriteRule ^/?_wp/(wp-admin/|wp-login\.php) /_wp/index.php [END]
+
+	##==redirect wp index to blog
+	RewriteCond %{REQUEST_URI} ^/?_wp/?$ [OR]
+	RewriteCond %{REQUEST_URI} ^/?_wp/index\.php$
+	RewriteRule ^ / [END,R=301]
+
+	##==serve files and directories, except root
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule .? - [L]
+	RewriteCond %{REQUEST_FILENAME} -d
+	RewriteCond %{REQUEST_URI} !^/?$
+	RewriteRule .? - [L]
+
+	##===serve wordpress for other URLs
+	#-! block unless cookie is set until we go live with wordpress
+	#RewriteCond %{HTTP_COOKIE} ^(.*;)?\ ?54321=98765\ ?(;.*)?$
+	RewriteRule ^ /_wp/index.php [END]
+</IfModule>
+
+##==disable Multiviews to prevent '/index' from resolving to '/index.php', etc
+<IfModule mod_negotiation.c>
+	Options -MultiViews
+</IfModule>
+
+##=====
+#==performance
+#=====
+##==cacheing
+#-@ https://raw.githubusercontent.com/h5bp/server-configs-apache/master/src/web_performance/expires_headers.conf
+<IfModule mod_expires.c>
+	ExpiresActive on
+	# ExpiresDefault 'access plus 1 seconds'
+
+	#--docs
+	# ExpiresByType text/html 'access plus 1 seconds'
+	# ExpiresByType text/xml 'access plus 1 seconds'
+
+	##--data
+	ExpiresByType application/json 'access plus 0 seconds'
+	ExpiresByType application/ld+json 'access plus 0 seconds'
+	ExpiresByType application/schema+json 'access plus 0 seconds'
+	ExpiresByType application/vnd.geo+json 'access plus 0 seconds'
+	ExpiresByType application/xml 'access plus 0 seconds'
+
+	##--feeds
+	ExpiresByType application/atom+xml 'access plus 1 hour'
+	ExpiresByType application/rdf+xml 'access plus 1 hour'
+	ExpiresByType application/rss+xml 'access plus 1 hour'
+
+	##--scripts
+	ExpiresByType application/javascript 'access plus 1 day'
+	ExpiresByType application/x-javascript 'access plus 1 day'
+	ExpiresByType text/javascript 'access plus 1 day'
+
+	##--styles
+	ExpiresByType text/css 'access plus 1 day'
+
+	##--media
+	ExpiresByType audio/ogg 'access plus 1 month'
+	ExpiresByType image/bmp 'access plus 1 month'
+	ExpiresByType image/gif 'access plus 1 month'
+	ExpiresByType image/jpeg 'access plus 1 month'
+	ExpiresByType image/png 'access plus 1 month'
+	ExpiresByType image/svg+xml 'access plus 1 month'
+	ExpiresByType image/webp 'access plus 1 month'
+	ExpiresByType video/mp4 'access plus 1 month'
+	ExpiresByType video/ogg 'access plus 1 month'
+	ExpiresByType video/webm 'access plus 1 month'
+	##---favicons
+	ExpiresByType image/x-icon 'access plus 1 week'
+	ExpiresByType image/vnd.microsoft.icon 'access plus 1 week'
+
+	##--fonts
+	ExpiresByType application/vnd.ms-fontobject 'access plus 1 year'
+	ExpiresByType application/font-woff 'access plus 1 year'
+	ExpiresByType application/font-woff2 'access plus 1 year'
+	ExpiresByType application/x-font-ttf 'access plus 1 year'
+	ExpiresByType application/x-font-woff 'access plus 1 year'
+	ExpiresByType font/eot 'access plus 1 year'
+	ExpiresByType font/opentype 'access plus 1 year'
+	ExpiresByType font/woff 'access plus 1 year'
+	ExpiresByType font/woff2 'access plus 1 year'
+
+	##--manifests
+	ExpiresByType application/manifest+json 'access plus 1 day'
+	ExpiresByType application/x-web-app-manifest+json 'access plus 0 seconds'
+	ExpiresByType text/cache-manifest 'access plus 0 seconds'
+
+	##--etc
+	ExpiresByType text/x-cross-domain-policy 'access plus 1 week'
+
+	##--public assets
+	<FilesMatch '\.(bmp|css|html|gif|jpe?g|js|png)$'>
+		ExpiresDefault 'access plus 1 seconds'
+		Header merge Cache-Control 'public'
+	</FilesMatch>
+</IfModule>
+
+##==compression
+#--compress text files
+#-@ https://github.com/h5bp/server-configs-apache/blob/master/src/web_performance/compression.conf
+<IfModule mod_deflate.c>
+	# <IfModule mod_filter.c>
+		AddOutputFilterByType DEFLATE 'application/atom+xml' \
+			'application/javascript' \
+			'application/json' \
+			'application/ld+json' \
+			'application/manifest+json' \
+			'application/rdf+xml' \
+			'application/rss+xml' \
+			'application/schema+json' \
+			'application/vnd.geo+json' \
+			'application/vnd.ms-fontobject' \
+			'application/x-font-ttf' \
+			'application/x-javascript' \
+			'application/x-web-app-manifest+json' \
+			'application/xhtml+xml' \
+			'application/xml' \
+			'font/eot' \
+			'font/opentype' \
+			'image/bmp' \
+			'image/svg+xml' \
+			'image/vnd.microsoft.icon' \
+			'image/x-icon' \
+			'text/cache-manifest' \
+			'text/css' \
+			'text/html' \
+			'text/javascript' \
+			'text/plain' \
+			'text/vcard' \
+			'text/vnd.rim.location.xloc' \
+			'text/vtt' \
+			'text/x-component' \
+			'text/x-cross-domain-policy' \
+			'text/xml'
+	# </IfModule>
+</IfModule>

@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+if(!file_exists(__DIR__ . '/../config/local.php')){
+	passthru('cd ' . __DIR__ . '/../config && cp local.php.dist local.php && vi local.php');
+}
+require_once(__DIR__ . '/../config/main.php');
+if(!file_exists(__DIR__ . '/../vendor/wordpress/wp-config.php')){
+	passthru('cd ' . __DIR__ . '/../vendor && ln -fns ../config/wp.php wp-config.php');
+}
+//-!! must have sudo, but we don't want to need root for composer
+passthru('sudo chown -R ' . SITE_USER . ':' . SERVER_GROUP . ' ' . PROJECT_PATH);
+passthru('chmod -R o-w ' . PROJECT_PATH);
+passthru('mkdir -p ' . PROJECT_PATH . '/www/_content/uploads');
+//--ensure wordpress can write to content folder for media, plugins, etc
+passthru('sudo find ' . PROJECT_PATH . '/www/_content -type d -exec chmod g+sw {} \\+');

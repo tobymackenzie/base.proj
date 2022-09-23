@@ -1,0 +1,21 @@
+{
+	"name": "tjm/project.site"
+	,"type": "project"
+	,"extra": {
+		"installer-paths": {
+			"vendor/wpackagist-plugin/{$name}": ["type:wordpress-plugin"]
+		}
+		,"wordpress-install-dir": "vendor/wordpress"
+	}
+	,"repositories": [
+		{
+			"type": "composer"
+			,"url": "https://wpackagist.org"
+		}
+	]
+	,"require": {
+		"johnpbloch/wordpress": "^6"
+		,"tjm/wp-base-theme": "^1"
+		,"tjm/wpthemehelper": "^1"
+	}
+}

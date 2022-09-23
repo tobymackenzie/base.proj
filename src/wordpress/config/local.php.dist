@@ -1,0 +1,17 @@
+<?php
+define('DB_NAME', 'tjm');
+define('DB_USER', 'tjm');
+define('DB_PASSWORD', '12345');
+define('DB_HOST', 'localhost');
+
+define('AUTH_KEY', '12345');
+define('SECURE_AUTH_KEY', '12345');
+define('LOGGED_IN_KEY', '12345');
+define('NONCE_KEY', '12345');
+define('AUTH_SALT', '12345');
+define('SECURE_AUTH_SALT', '12345');
+define('LOGGED_IN_SALT', '12345');
+define('NONCE_SALT', '12345');
+
+define('SITE_USER', 'www-data');
+define('SERVER_GROUP', 'www-data');
