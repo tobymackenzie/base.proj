@@ -20,12 +20,16 @@ mkdir -p "${1}"
 cd "${1}"
 
 #--copy type files into place
-rsync -Dglopr "${srcDir}/base/" .
+tmpDir=_tmp$(date "+%Y%m%d-%H%M%S")
+rsync -Dglopr "${srcDir}/base/" $tmpDir
 for (( i=2; i <= $#; ++i )); do
 	src="${srcDir}/${!i}/"
 	if [[ -d $src ]]; then
-		rsync -Dglopr $src .
+		rsync -Dglopr $src $tmpDir
 	else
 		>&2 echo "project type \"${!i}\" not found"
 	fi
 done
+shopt -s dotglob
+mv -i $tmpDir/* .
+rm -r $tmpDir
