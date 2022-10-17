@@ -1,7 +1,7 @@
 base.proj
 =======
 
-Use `bin/create` script to create a new project at a given directory with 0 or more project types, where choosing a project type copies the files from that project type in the `src` directory into the new project directory.  The files in `src/base` will always be added to the project.  Usage looks like:
+Use `bin/create` script to create a new project at a given directory with 0 or more project types, where choosing a project type copies the files from that project type in the `proj` directory into the new project directory.  The files in `proj/base` will always be added to the project.  Usage looks like:
 
 ``` sh
 bin/create git php dest

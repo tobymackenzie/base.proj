@@ -5,7 +5,7 @@ if [ "$#" -eq 0 ]; then
 	exit 1
 fi
 
-#--determine src dir
+#--determine proj dir
 #-@ https://stackoverflow.com/a/246128
 scriptPath=${BASH_SOURCE[0]}
 while [ -L "$scriptPath" ]; do
@@ -13,7 +13,7 @@ while [ -L "$scriptPath" ]; do
 	scriptPath=$(readlink "$scriptPath")
 	[[ $scriptPath != /* ]] && scriptPath=$scriptDir/$scriptPath
 done
-srcDir=$(cd -P "$(dirname "$scriptPath")" >/dev/null 2>&1 && pwd)"/../src/"
+projDir=$(cd -P "$(dirname "$scriptPath")" >/dev/null 2>&1 && pwd)"/../proj/"
 
 #--make project dir, move into it
 mkdir -p "${@: -1}"
@@ -21,11 +21,11 @@ cd "${@: -1}"
 
 #--copy type files into place
 tmpDir=_tmp$(date "+%Y%m%d-%H%M%S")
-rsync -Dglopr "${srcDir}/base/" $tmpDir
+rsync -Dglopr "${projDir}/base/" $tmpDir
 for (( i=1; i <= $# - 1; ++i )); do
-	src="${srcDir}${!i}/"
-	if [[ -d $src ]]; then
-		rsync -Dglopr $src $tmpDir
+	proj="${projDir}${!i}/"
+	if [[ -d $proj ]]; then
+		rsync -Dglopr $proj $tmpDir
 	else
 		>&2 echo "project type \"${!i}\" not found"
 	fi
