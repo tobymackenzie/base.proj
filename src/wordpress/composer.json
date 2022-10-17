@@ -18,4 +18,7 @@
 		,"tjm/wp-base-theme": "^1"
 		,"tjm/wpthemehelper": "^1"
 	}
+	,"require-dev": {
+		"tjm/dev": "*"
+	}
 }
