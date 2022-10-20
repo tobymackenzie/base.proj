@@ -1,0 +1,3 @@
+.editorconfig
+license.md
+readme.md

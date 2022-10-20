@@ -1,0 +1,13 @@
+imports:
+  - {resource: console.php}
+services:
+  TJM\BaseProj\BaseProj: ~
+  TJM\ShellRunner\ShellRunner: ~
+  TJM\BaseProj\Command\:
+    autowire: true
+    resource: '%paths.project%/src/Command'
+    tags: ['console.command']
+tjm_console:
+  defaultCommand: 'list'
+  name: 'base.proj'
+  version: '0.1'

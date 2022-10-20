@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+use TJM\Component\Console\Application;
+define('TJM_PROJECT_DIR', __DIR__ . '/..');
+define('TJM_AUTOLOAD', TJM_PROJECT_DIR . '/vendor/autoload.php');
+if(!file_exists(TJM_AUTOLOAD)){
+	echo "Initializing dependencies…\n";
+	passthru('composer install -d ' . TJM_PROJECT_DIR);
+}
+require_once(TJM_AUTOLOAD);
+(new Application(TJM_PROJECT_DIR . '/config/console.yml'))->run();
