@@ -1,7 +1,9 @@
 imports:
   - {resource: console.php}
 services:
-  TJM\BaseProj\BaseProj: ~
+  TJM\BaseProj\BaseProj:
+    $shell: ~
+    $opts: '%baseProjOpts%'
   TJM\ShellRunner\ShellRunner: ~
   TJM\BaseProj\Command\:
     autowire: true
