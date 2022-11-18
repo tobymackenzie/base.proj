@@ -5,6 +5,7 @@ use TJM\ShellRunner\Location\Location;
 use TJM\ShellRunner\ShellRunner;
 
 class BaseProj{
+	protected $openCommand = 'open';
 	protected $projPath =  __DIR__ . '/../projects';
 	protected $templatePath = __DIR__ . '/../templates';
 	protected $shell;
@@ -49,6 +50,33 @@ class BaseProj{
 			$this->shell->run(array_merge($opts, ['command'=> $commands]));
 		}
 		$this->shell->run(array_merge($opts, ['command'=> 'rm -r ' . $tmpDir]));
+	}
+
+	/*=====
+	==project path
+	=====*/
+	/*
+	Method: has
+	Whether project exists in project path
+	*/
+	public function has($name){
+		try{
+			$this->shell->run([
+				'command'=> 'ls ' . escapeshellarg($this->projPath . '/' . $name),
+				'interactive'=> false,
+			]);
+			return true;
+		}catch(Exception $e){
+			return false;
+		}
+	}
+
+	/*
+	Method: open
+	Open existing project in editor / etc
+	*/
+	public function open($name, $command = null){
+		$this->shell->run(($command ?? $this->openCommand) . ' ' . escapeshellarg($this->projPath . '/' . $name));
 	}
 
 	/*=====
