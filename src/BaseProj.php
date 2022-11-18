@@ -1,9 +1,11 @@
 <?php
 namespace TJM\BaseProj;
+use Exception;
 use TJM\ShellRunner\Location\Location;
 use TJM\ShellRunner\ShellRunner;
 
 class BaseProj{
+	protected $projPath =  __DIR__ . '/../projects';
 	protected $templatePath = __DIR__ . '/../templates';
 	protected $shell;
 	protected $tmpIncrement = 0;
@@ -30,7 +32,7 @@ class BaseProj{
 				$path = $location->getPath();
 			}else{
 				$isLocal = true;
-				$path = $location;
+				$path = $this->getNormalizedLocationPath($location);
 				$location = new Location('file', '.');
 			}
 			$commands = [];
@@ -54,5 +56,11 @@ class BaseProj{
 	=====*/
 	protected function getTmpName(){
 		return '_tmp' . date('Ymd-His') . '-' . ++$this->tmpIncrement;
+	}
+	protected function getNormalizedLocationPath($path){
+		if(is_string($path) && substr($path, 0, 1) === ':'){
+			$path = $this->projPath . '/' . substr($path, 1);
+		}
+		return $path;
 	}
 }

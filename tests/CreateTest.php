@@ -30,6 +30,20 @@ class CreateTest extends TestCase{
 	}
 
 	/*=====
+	==proj folder
+	=====*/
+	public function testCreateInProjFolder(){
+		mkdir('tmpproj');
+		$proj = new BaseProj(null, [
+			'projPath'=> __DIR__ . '/tmpproj',
+		]);
+		$proj->create(':tmp1', ['php']);
+		$this->assertLs('create-php.txt', 'tmpproj/tmp1');
+		$this->assertLs('create-php-src.txt', 'tmpproj/tmp1/src');
+		$this->assertLs('create-php-tests.txt', 'tmpproj/tmp1/tests');
+	}
+
+	/*=====
 	==helpers
 	=====*/
 	protected function assertLs($expect, $path){

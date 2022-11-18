@@ -19,7 +19,7 @@ class CreateCommand extends Command{
 			->setDescription('Create a project.')
 			->addArgument('args', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Project types to add.  Final argument is path to create project at, if no location option provided.')
 			->addOption('forward-agent', 'f', InputOption::VALUE_NONE, 'Forward local credentials for connecting to other servers from remote when running over SSH.')
-			->addOption('locations', 'l', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Location(s) / path(s) to create project at. Can be file paths or "ssh://" type path')
+			->addOption('locations', 'l', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Location(s) / path(s) to create project at. Can be file paths or "ssh://" type path.  If prefixed with ":", will create in configured project folder.')
 		;
 	}
 	protected function execute(InputInterface $input, OutputInterface $output){
