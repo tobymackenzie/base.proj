@@ -6,6 +6,7 @@ use TJM\ShellRunner\ShellRunner;
 class BaseProj{
 	protected $projPath = __DIR__ . '/../proj';
 	protected $shell;
+	protected $tmpIncrement = 0;
 	public function __construct(ShellRunner $shell = null, $opts = []){
 		$this->shell = $shell ?: new ShellRunner();
 		foreach($opts as $key=> $value){
@@ -17,7 +18,7 @@ class BaseProj{
 		if(!is_array($locations)){
 			$locations = [$locations];
 		}
-		$tmpDir = '_tmp' . date('Ymd-His');
+		$tmpDir = $this->getTmpName();
 		$projCommands = ['mkdir ' . $tmpDir];
 		foreach($types as $type){
 			$projCommands[] = "echo 'copying '{$type} && rsync -Dglopr {$this->projPath}/{$type}/ {$tmpDir}";
@@ -46,5 +47,12 @@ class BaseProj{
 			$this->shell->run(array_merge($opts, ['command'=> $commands]));
 		}
 		$this->shell->run(array_merge($opts, ['command'=> 'rm -r ' . $tmpDir]));
+	}
+
+	/*=====
+	==helpers
+	=====*/
+	protected function getTmpName(){
+		return '_tmp' . date('Ymd-His') . '-' . ++$this->tmpIncrement;
 	}
 }
