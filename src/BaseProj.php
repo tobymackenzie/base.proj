@@ -4,7 +4,7 @@ use TJM\ShellRunner\Location\Location;
 use TJM\ShellRunner\ShellRunner;
 
 class BaseProj{
-	protected $projPath = __DIR__ . '/../proj';
+	protected $templatePath = __DIR__ . '/../templates';
 	protected $shell;
 	protected $tmpIncrement = 0;
 	public function __construct(ShellRunner $shell = null, $opts = []){
@@ -21,7 +21,7 @@ class BaseProj{
 		$tmpDir = $this->getTmpName();
 		$projCommands = ['mkdir ' . $tmpDir];
 		foreach($types as $type){
-			$projCommands[] = "echo 'copying '{$type} && rsync -Dglopr {$this->projPath}/{$type}/ {$tmpDir}";
+			$projCommands[] = "echo 'copying '{$type} && rsync -Dglopr {$this->templatePath}/{$type}/ {$tmpDir}";
 		}
 		$this->shell->run(array_merge($opts, ['command'=> $projCommands]));
 		foreach($locations as $location){
