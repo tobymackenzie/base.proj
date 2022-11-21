@@ -1,6 +1,15 @@
 {
 	"name": "tjm/project.site"
 	,"type": "project"
+	,"description": ""
+	,"authors": [
+		{
+			"name": "Toby Mackenzie"
+			,"email": "public@tobymackenzie.com"
+			,"homepage": "https://www.tobymackenzie.com"
+		}
+	]
+	,"license": "0BSD"
 	,"extra": {
 		"installer-paths": {
 			"vendor/wpackagist-plugin/{$name}": ["type:wordpress-plugin"]
