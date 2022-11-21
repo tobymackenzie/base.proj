@@ -28,6 +28,14 @@ class CreateTest extends TestCase{
 		$this->assertLs('create-php-src.txt', 'tmp1/src');
 		$this->assertLs('create-php-tests.txt', 'tmp1/tests');
 	}
+	public function testCreateGitPHP(){
+		$proj = new BaseProj();
+		$proj->create('tmp1', ['git', 'php']);
+		$this->assertLs('create-git-php.txt', 'tmp1');
+		$this->assertLs('create-php-src.txt', 'tmp1/src');
+		$this->assertLs('create-php-tests.txt', 'tmp1/tests');
+		$this->assertEquals(file_get_contents('tmp1/.gitignore'), file_get_contents('data/create-git-php-gitignore.txt'));
+	}
 
 	/*=====
 	==proj folder

@@ -1,6 +1,7 @@
 <?php
 namespace TJM\BaseProj;
 use Exception;
+use TJM\FileMergeTasks\MergeDirectoryTask;
 use TJM\ShellRunner\Location\Location;
 use TJM\ShellRunner\ShellRunner;
 
@@ -22,11 +23,10 @@ class BaseProj{
 			$locations = [$locations];
 		}
 		$tmpDir = $this->getTmpName();
-		$projCommands = ['mkdir ' . $tmpDir];
+		$this->shell->run(array_merge($opts, ['command'=> 'mkdir ' . $tmpDir]));
 		foreach($types as $type){
-			$projCommands[] = "echo 'copying '{$type} && rsync -Dglopr {$this->templatePath}/{$type}/ {$tmpDir}";
+			(new MergeDirectoryTask(["{$this->templatePath}/{$type}"], $tmpDir))->do();
 		}
-		$this->shell->run(array_merge($opts, ['command'=> $projCommands]));
 		foreach($locations as $location){
 			if($location instanceof Location){
 				$isLocal = $location->getProtocol() === 'file';
