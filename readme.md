@@ -5,7 +5,7 @@ Create a new project from one or more project templates using provided PHP or BA
 
 Early stages, usage and files subject to change.
 
-PHP
+PHP usage
 ----
 
 Use `bin/console create` to create a new project at a given directory with 0 or more project types, where choosing a project type copies the files from that project type in the `templates` directory into the new project directory.  The files in `templates/base` will always be added to the project.  Usage looks like:
@@ -29,7 +29,7 @@ parameters:
 
 The script makes use of some Symfony console commands, which make use of a PHP class, `TJM\BaseProj\BaseProj(null, array)`.  This can be used for programatic project management.
 
-BASH
+BASH usage
 ----
 
 Use `bin/create` to create a new project much like the PHP version, except without advanced merging and other features.  Usage looks like:
