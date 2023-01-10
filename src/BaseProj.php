@@ -61,6 +61,9 @@ class BaseProj{
 	*/
 	public function has($name){
 		try{
+			if(!$this->isValidName($name)){
+				throw new Exception('Project name is invalid');
+			}
 			$this->shell->run([
 				'command'=> 'ls ' . escapeshellarg($this->projPath . '/' . $name),
 				'interactive'=> false,
@@ -72,10 +75,28 @@ class BaseProj{
 	}
 
 	/*
+	Method: isValidName
+	Whether project name is valid, to prevent accessing some outside directories
+	*/
+	protected function isValidName($name){
+		return
+			is_string($name)
+			&& strlen($name)
+			&& strpos($name, '../') === false
+			&& strpos($name, '/..') === false
+			&& substr($name, 0, 1) !== '/'
+			&& $name !== '..'
+		;
+	}
+
+	/*
 	Method: open
 	Open existing project in editor / etc
 	*/
 	public function open($name, $command = null){
+		if(!$this->isValidName($name)){
+			throw new Exception('Project name is invalid');
+		}
 		$this->shell->run(($command ?? $this->openCommand) . ' ' . escapeshellarg($this->projPath . '/' . $name));
 	}
 
