@@ -75,6 +75,24 @@ class BaseProj{
 	}
 
 	/*
+	Method: list
+	List projects or project files
+	*/
+	public function list($name = null){
+		$path = $this->projPath . '/';
+		if($name){
+			if(!$this->isValidName($name)){
+				throw new Exception('Project name is invalid');
+			}
+			$path .= $name;
+		}
+		return explode("\n", $this->shell->run([
+			'command'=> 'ls -1 ' . escapeshellarg($path),
+			'interactive'=> false,
+		]));
+	}
+
+	/*
 	Method: isValidName
 	Whether project name is valid, to prevent accessing some outside directories
 	*/
