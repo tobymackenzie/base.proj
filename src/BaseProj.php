@@ -119,6 +119,20 @@ class BaseProj{
 	}
 
 	/*=====
+	==templates
+	=====*/
+	/*
+	Method: getTypes
+	List available project types / templates
+	*/
+	public function getTypes(){
+		return explode("\n", $this->shell->run([
+			'command'=> 'ls -1 ' . escapeshellarg($this->templatePath),
+			'interactive'=> false,
+		]));
+	}
+
+	/*=====
 	==helpers
 	=====*/
 	protected function getTmpName(){
