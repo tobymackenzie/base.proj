@@ -112,7 +112,7 @@ class BaseProj{
 	Open existing project in editor / etc
 	*/
 	public function open($name, $command = null){
-		if(!$this->isValidName($name)){
+		if(!$this->isValidName($name) && !$this->isPwdProject($name)){
 			throw new Exception('Project name is invalid');
 		}
 		if(empty($command)){
@@ -131,7 +131,7 @@ class BaseProj{
 				$this->open($name, $c);
 			}
 		}else{
-			$path = $this->projPath . '/' . $name;
+			$path = $this->getProjectRoot($name);
 			if(strpos($command, '{{path}}') === false){
 				$command .= ' ' . $path;
 			}else{
@@ -166,6 +166,32 @@ class BaseProj{
 	=====*/
 	protected function isCommandInteractive($command){
 		return !in_array(explode(' ', $command)[0], ['open']);
+	}
+	protected function getProjectRoot($name){
+		if($this->isPwdProject($name)){
+			$path = realpath($name);
+			if(!$path){
+				throw new Exception("BaseProject::getProjectRoot(): pwd path not found");
+			}
+			$path = $this->shell->run('cd ' . $path . ' && git rev-parse --show-toplevel 2> /dev/null || echo ""');
+			if(!$path){
+				throw new Exception("BaseProject::getProjectRoot(): Project root not found");
+			}
+			return $path;
+		}elseif($this->isValidName($name)){
+			return $this->projPath . '/' . $name;
+		}else{
+			throw new Exception("BaseProject::getProjectRoot(): Name {$name} does not appear to be a valid project");
+		}
+	}
+	protected function isPwdProject($name){
+		//--is considered a generic project if path exists and is a git working tree
+		//-# should work for other paths, but we don't want to support those currently
+		if($name !== '.'){
+			return false;
+		}
+		$path = realpath($name);
+		return $path && $this->shell->run('cd ' . $path . ' && git rev-parse --is-inside-work-tree 2> /dev/null || echo "false"') === 'true';
 	}
 	protected function getTmpName(){
 		return '_tmp' . date('Ymd-His') . '-' . ++$this->tmpIncrement;
