@@ -140,7 +140,7 @@ class BaseProj{
 			$opts = [
 				'command'=> $command,
 			];
-			if(strpos($command, '$SHELL') !== false){
+			if($this->isCommandInteractive($command)){
 				$opts['interactive'] = true;
 			}
 			$this->shell->run($opts);
@@ -164,6 +164,9 @@ class BaseProj{
 	/*=====
 	==helpers
 	=====*/
+	protected function isCommandInteractive($command){
+		return !in_array(explode(' ', $command)[0], ['open']);
+	}
 	protected function getTmpName(){
 		return '_tmp' . date('Ymd-His') . '-' . ++$this->tmpIncrement;
 	}
