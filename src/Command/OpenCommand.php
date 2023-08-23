@@ -19,13 +19,14 @@ class OpenCommand extends Command{
 		$this
 			->setDescription('Open an existing project.')
 			->addArgument('project', InputArgument::REQUIRED, 'Name (subpath) of project to open.  Must be inside configured project folder.')
-			->addOption('command', 'c', InputOption::VALUE_REQUIRED, 'Command to run for opening project.  Defaults to value configured on BaseProj')
+			->addOption('command', 'c', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Command to run for opening project.  Defaults to value configured on BaseProj')
 		;
 	}
 	protected function execute(InputInterface $input, OutputInterface $output){
 		$project = $input->getArgument('project');
 		if($this->baseProj->has($project)){
-			$this->baseProj->open($project, $input->getOption('command'));
+			$command = $input->getOption('command') ?: null;
+			$this->baseProj->open($project, $command);
 		}else{
 			throw new Exception("Project \"{$project}\" not found");
 		}

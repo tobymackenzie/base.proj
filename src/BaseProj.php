@@ -6,7 +6,7 @@ use TJM\ShellRunner\Location\Location;
 use TJM\ShellRunner\ShellRunner;
 
 class BaseProj{
-	protected $openCommand = 'open';
+	protected $openCommand; //--default opens `$SHELL` at directory
 	protected $projPath =  __DIR__ . '/../projects';
 	protected $templatePath = __DIR__ . '/../templates';
 	protected $shell;
@@ -115,7 +115,36 @@ class BaseProj{
 		if(!$this->isValidName($name)){
 			throw new Exception('Project name is invalid');
 		}
-		$this->shell->run(($command ?? $this->openCommand) . ' ' . escapeshellarg($this->projPath . '/' . $name));
+		if(empty($command)){
+			if(empty($this->openCommand)){
+				$this->openCommand = 'cd {{path}} && $SHELL';
+				if(substr(getenv('SHELL'), -3) === 'zsh'){
+					$this->openCommand .= ' -i';
+				}else{
+					$this->openCommand .= ' -l';
+				}
+			}
+			$command = $this->openCommand;
+		}
+		if(is_array($command)){
+			foreach($command as $c){
+				$this->open($name, $c);
+			}
+		}else{
+			$path = $this->projPath . '/' . $name;
+			if(strpos($command, '{{path}}') === false){
+				$command .= ' ' . $path;
+			}else{
+				$command = str_replace('{{path}}', $path, $command);
+			}
+			$opts = [
+				'command'=> $command,
+			];
+			if(strpos($command, '$SHELL') !== false){
+				$opts['interactive'] = true;
+			}
+			$this->shell->run($opts);
+		}
 	}
 
 	/*=====
