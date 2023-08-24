@@ -18,7 +18,7 @@ to create a new project in a folder `dest` with the `base`, `git`, and `php` pro
 
 There is also some project management.  Create a project in a defined parent folder by prefixing a path with ":".  Use the `open` subcommand to open a given project with a defined command.  More commands will likely be added to help with projects.
 
-With the default command script, a `config.local.yml` or `config.yml.php` can be added to the `config` directory using Symfony style configuration to change settings, with the `baseProjOpts` specifying configuration options, eg:
+With the default command script, a `console.local.yml` or `console.local.php` can be added to the `config` directory using Symfony style configuration to change settings, with the `baseProjOpts` specifying configuration options, eg:
 
 ``` php
 parameters:
