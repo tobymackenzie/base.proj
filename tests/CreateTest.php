@@ -12,25 +12,25 @@ class CreateTest extends TestCase{
 	}
 	public function testCreateBase(){
 		$proj = new BaseProj();
-		$proj->create('tmp1');
+		$proj->create('./tmp1');
 		$this->assertLs('create-base.txt', 'tmp1');
 	}
 	public function testCreateTwoBase(){
 		$proj = new BaseProj();
-		$proj->create(['tmp1', 'tmp2']);
+		$proj->create(['./tmp1', './tmp2']);
 		$this->assertLs('create-base.txt', 'tmp1');
 		$this->assertLs('create-base.txt', 'tmp2');
 	}
 	public function testCreatePHP(){
 		$proj = new BaseProj();
-		$proj->create('tmp1', ['php']);
+		$proj->create('./tmp1', ['php']);
 		$this->assertLs('create-php.txt', 'tmp1');
 		$this->assertLs('create-php-src.txt', 'tmp1/src');
 		$this->assertLs('create-php-tests.txt', 'tmp1/tests');
 	}
 	public function testCreateGitPHP(){
 		$proj = new BaseProj();
-		$proj->create('tmp1', ['git', 'php']);
+		$proj->create('./tmp1', ['git', 'php']);
 		$this->assertLs('create-git-php.txt', 'tmp1');
 		$this->assertLs('create-php-src.txt', 'tmp1/src');
 		$this->assertLs('create-php-tests.txt', 'tmp1/tests');
