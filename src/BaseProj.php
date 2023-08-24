@@ -148,6 +148,25 @@ class BaseProj{
 	}
 
 	/*=====
+	==shell
+	=====*/
+	/*
+	Method: run
+	Run a shell command in a given site's project root.
+	*/
+	public function run($name, $command){
+		if(!$this->isValidName($name) && !$this->isPwdProject($name)){
+			throw new Exception('Project name is invalid');
+		}
+		$path = $this->getProjectRoot($name);
+		if($path){
+			return $this->shell->run($command, $path);
+		}else{
+			throw new Exception('Project path not found.');
+		}
+	}
+
+	/*=====
 	==templates
 	=====*/
 	/*
