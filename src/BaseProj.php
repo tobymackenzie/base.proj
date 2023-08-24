@@ -166,6 +166,45 @@ class BaseProj{
 		}
 	}
 
+	/*
+	Method: runBin
+	Run a command in a given site's project "bin" folder.
+	*/
+	public function runBin($name, $command){
+		if(is_array($command)){
+			$command['command'] = escapeshellcmd('./bin/' . $command['command']);
+		}else{
+			$command = escapeshellcmd('./bin/' . $command);
+		}
+		return $this->run($name, $command);
+	}
+
+	/*
+	Method: runConsole
+	Run a site's `bin/console` command, useful for eg Symfony projects.
+	*/
+	public function runConsole($name, $command){
+		if(is_array($command)){
+			$command['command'] = escapeshellcmd('./bin/console ' . $command['command']);
+		}else{
+			$command = escapeshellcmd('./bin/console ' . $command);
+		}
+		return $this->run($name, $command);
+	}
+
+	/*
+	Method: runGit
+	Run a git command in a given site's project root.
+	*/
+	public function runGit($name, $command){
+		if(is_array($command)){
+			$command['command'] = escapeshellcmd('git ' . $command['command']);
+		}else{
+			$command = escapeshellcmd('git ' . $command);
+		}
+		return $this->run($name, $command);
+	}
+
 	/*=====
 	==templates
 	=====*/
