@@ -1,13 +1,16 @@
 <?php
 namespace TJM\BaseProj\Command;
 use Exception;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TJM\BaseProj\BaseProj;
 
+#[AsCommand(name: 'run', aliases: RunCommand::ALIASES)]
 class RunCommand extends Command{
+	const ALIASES = ['awk', 'cat', 'chmod', 'composer', 'find', 'grep', 'gvim', 'less', 'll', 'nano', 'npm', 'phpunit', 'sed', 'vagrant', 'vi', 'vim'];
 	static public $defaultName = 'run';
 	protected $baseProj;
 	public function __construct(BaseProj $baseProj){
@@ -23,6 +26,10 @@ class RunCommand extends Command{
 	}
 	protected function execute(InputInterface $input, OutputInterface $output){
 		$command = $input->getArgument('cmd') ?: null;
+		$called = $input->getArgument('command');
+		if(in_array($called, static::ALIASES)){
+			$command = "{$called} {$command}";
+		}
 		foreach($input->getArgument('projects') as $project){
 			if($this->baseProj->has($project)){
 				$this->baseProj->run($project, [
