@@ -32,5 +32,6 @@ class CreateCommand extends Command{
 		$args = $input->getArgument('args');
 		$locations = $input->getOption('locations') ?: [array_pop($args)];
 		$this->baseProj->create($locations, $args, $opts);
+		return 0;
 	}
 }

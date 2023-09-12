@@ -31,5 +31,6 @@ class OpenCommand extends Command{
 				throw new Exception("Project \"{$project}\" not found");
 			}
 		}
+		return 0;
 	}
 }

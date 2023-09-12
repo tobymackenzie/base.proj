@@ -32,5 +32,6 @@ class ListCommand extends Command{
 				throw new Exception("Error finding project folder");
 			}
 		}
+		return 0;
 	}
 }

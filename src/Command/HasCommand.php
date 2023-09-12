@@ -36,5 +36,6 @@ class HasCommand extends Command{
 				$output->writeln("false");
 			}
 		}
+		return 0;
 	}
 }
