@@ -75,6 +75,22 @@ class BaseProj{
 	}
 
 	/*
+	Method: getPath
+	Get path to project, or `projPath` if no name
+	*/
+	public function getPath($name = null){
+		if(isset($name)){
+			if($this->isValidName($name)){
+				return $this->getProjectRoot($name);
+			}else{
+				throw new Exception('Project name is invalid');
+			}
+		}else{
+			return $this->projPath;
+		}
+	}
+
+	/*
 	Method: list
 	List projects or project files
 	*/
