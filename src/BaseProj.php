@@ -6,6 +6,7 @@ use TJM\ShellRunner\Location\Location;
 use TJM\ShellRunner\ShellRunner;
 
 class BaseProj{
+	protected $editor = '${VISUAL:-${EDITOR:-vi}}'; //--editor command for `edit()` method
 	protected $openCommand; //--default opens `$SHELL` at directory
 	protected $projPath =  __DIR__ . '/../projects';
 	protected $templatePath = __DIR__ . '/../templates';
@@ -166,6 +167,17 @@ class BaseProj{
 	/*=====
 	==shell
 	=====*/
+	/*
+	Method: edit
+	Edit a project's file.
+	*/
+	public function edit($name, $file){
+		return $this->run($name, [
+			'command'=> $this->editor . ' ' . escapeshellarg($file),
+			'interactive'=> true,
+		]);
+	}
+
 	/*
 	Method: run
 	Run a shell command in a given site's project root.
