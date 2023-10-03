@@ -2,21 +2,14 @@
 namespace TJM\BaseProj\Command;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use TJM\BaseProj\BaseProj;
 
 #[AsCommand(name: 'run', aliases: RunCommand::ALIASES)]
 class RunCommand extends Command{
 	const ALIASES = ['awk', 'cat', 'chmod', 'composer', 'find', 'grep', 'gvim', 'less', 'll', 'nano', 'npm', 'phpunit', 'sed', 'vagrant', 'vi', 'vim'];
 	static public $defaultName = 'run';
-	protected $baseProj;
-	public function __construct(BaseProj $baseProj){
-		$this->baseProj = $baseProj;
-		parent::__construct();
-	}
 	protected function configure(){
 		$this
 			->setDescription('Run a shell command on an existing project.')

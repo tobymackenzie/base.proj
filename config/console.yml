@@ -8,6 +8,7 @@ services:
   TJM\BaseProj\Command\:
     autowire: true
     resource: '%paths.project%/src/Command'
+    exclude: ['%paths.project%/src/Command/Command.php']
     tags: ['console.command']
 tjm_console:
   defaultCommand: 'list'
