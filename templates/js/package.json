@@ -1,0 +1,8 @@
+{
+	"name": "@tobymackenzie/project.js",
+	"main": "main.js",
+	"type": "module",
+	"devDependencies": {
+		"qunit": "^2.20.0"
+	}
+}

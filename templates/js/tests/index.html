@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<title>Test project</title>
+
+<!-- load qunit -->
+<script src="./_vendor/qunit/qunit/qunit.js"></script>
+<link rel="stylesheet" href="./_vendor/qunit/qunit/qunit.css"></link>
+
+<!-- load tmclasses and test -->
+<script type="module">
+	//--test with global strict mode
+	'use strict';
+
+	//--make sure QUnit doesn't start immediately, so we can load all files first
+	QUnit.config.autostart = false;
+	Promise.all([
+		import('./main.js'),
+	]).then(function(){
+		QUnit.start();
+	});
+</script>
+
+<div id="qunit">Load failure</div>
