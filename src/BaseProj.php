@@ -42,7 +42,11 @@ class BaseProj{
 			}
 			if($isLocal){
 				$commands[] = 'shopt -s dotglob';
-				$commands[] = 'cp -ir ' . $tmpDir . '/* ' . $path;
+				if(isset($opts['interactive']) && $opts['interactive']){
+					$commands[] = 'cp -iR ' . $tmpDir . '/* ' . $path;
+				}else{
+					$commands[] = "rsync -Dglopr {$tmpDir}/ " . $path;
+				}
 			}else{
 				$this->shell->run(array_merge($opts, ['command'=> $commands]), $location);
 				$commands = ["rsync -Dglopr {$tmpDir}/ " . (string) $location];
