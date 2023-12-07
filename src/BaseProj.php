@@ -35,7 +35,6 @@ class BaseProj{
 			}else{
 				$isLocal = true;
 				$path = $this->getNormalizedLocationPath($location);
-				$location = new Location('file', '.');
 			}
 			$commands = [];
 			if(!preg_match('/^\.+$/', $path)){
