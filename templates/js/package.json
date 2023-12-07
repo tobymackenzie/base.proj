@@ -1,5 +1,6 @@
 {
 	"name": "@tobymackenzie/project.js",
+	"license": "0BSD",
 	"main": "main.js",
 	"type": "module",
 	"devDependencies": {
