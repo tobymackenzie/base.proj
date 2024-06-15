@@ -180,6 +180,22 @@ class BaseProj{
 			'interactive'=> true,
 		]);
 	}
+	/*
+	Method: editFirst
+	Edit first project file found, or first if creating
+	 */
+	public function editFirst($name, array $files){
+		foreach($files as $file){
+			if($this->has($name. '/' . $file)){
+				$match = $file;
+				break;
+			}
+		}
+		if(!isset($match)){
+			$match = $files[0];
+		}
+		return $this->edit($name, $match);
+	}
 
 	/*
 	Method: run
