@@ -69,7 +69,7 @@ class BaseProj{
 				throw new Exception('Project name is invalid');
 			}
 			$this->shell->run([
-				'command'=> 'ls ' . escapeshellarg($this->projPath . '/' . $name),
+				'command'=> 'ls ' . escapeshellarg($this->projPath . '/' . $name) . ' 2> /dev/null',
 				'interactive'=> false,
 			]);
 			return true;
