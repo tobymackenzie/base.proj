@@ -16,13 +16,7 @@ class TodoCommand extends Command{
 	protected function execute(InputInterface $input, OutputInterface $output){
 		foreach($input->getArgument('projects') as $project){
 			if($this->baseProj->has($project)){
-				if($this->baseProj->has($project . '/todo.md')){
-					$this->baseProj->edit($project, 'todo.md');
-				}elseif($this->baseProj->has($project . '/do.md')){
-					$this->baseProj->edit($project, 'do.md');
-				}else{
-					$this->baseProj->edit($project, 'todo.md');
-				}
+				$this->baseProj->editFirst($project, ['todo.md', 'do.md']);
 			}else{
 				throw new Exception("Project \"{$project}\" not found");
 			}
