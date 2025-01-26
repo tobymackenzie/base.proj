@@ -24,7 +24,7 @@ class BaseProj{
 			$locations = [$locations];
 		}
 		$tmpDir = $this->getTmpName();
-		$this->shell->run(array_merge($opts, ['command'=> 'mkdir ' . $tmpDir]));
+		$this->shell->run(array_merge($opts, ['command'=> '\mkdir ' . $tmpDir]));
 		foreach($types as $type){
 			(new MergeDirectoryTask(["{$this->templatePath}/{$type}"], $tmpDir))->do();
 		}
@@ -38,22 +38,22 @@ class BaseProj{
 			}
 			$commands = [];
 			if(!preg_match('/^\.+$/', $path)){
-				$commands[] = 'mkdir -p ' . $path;
+				$commands[] = '\mkdir -p ' . $path;
 			}
 			if($isLocal){
 				$commands[] = 'shopt -s dotglob';
 				if(isset($opts['interactive']) && $opts['interactive']){
-					$commands[] = 'cp -iR ' . $tmpDir . '/* ' . $path;
+					$commands[] = '\cp -iR ' . $tmpDir . '/* ' . $path;
 				}else{
-					$commands[] = "rsync -Dglopr {$tmpDir}/ " . $path;
+					$commands[] = "\\rsync -Dglopr {$tmpDir}/ " . $path;
 				}
 			}else{
 				$this->shell->run(array_merge($opts, ['command'=> $commands]), $location);
-				$commands = ["rsync -Dglopr {$tmpDir}/ " . (string) $location];
+				$commands = ["\\rsync -Dglopr {$tmpDir}/ " . (string) $location];
 			}
 			$this->shell->run(array_merge($opts, ['command'=> $commands]));
 		}
-		$this->shell->run(array_merge($opts, ['command'=> 'rm -r ' . $tmpDir]));
+		$this->shell->run(array_merge($opts, ['command'=> '\rm -r ' . $tmpDir]));
 	}
 
 	/*=====
@@ -69,7 +69,7 @@ class BaseProj{
 				throw new Exception('Project name is invalid');
 			}
 			$this->shell->run([
-				'command'=> 'ls ' . escapeshellarg($this->projPath . '/' . $name) . ' 2> /dev/null',
+				'command'=> '\ls ' . escapeshellarg($this->projPath . '/' . $name) . ' 2> /dev/null',
 				'interactive'=> false,
 			]);
 			return true;
@@ -107,7 +107,7 @@ class BaseProj{
 			$path .= $name;
 		}
 		return explode("\n", $this->shell->run([
-			'command'=> 'ls -1 ' . escapeshellarg($path),
+			'command'=> '\ls -1 ' . escapeshellarg($path),
 			'interactive'=> false,
 		]));
 	}
@@ -137,7 +137,7 @@ class BaseProj{
 		}
 		if(empty($command)){
 			if(empty($this->openCommand)){
-				$this->openCommand = 'cd {{path}} && $SHELL';
+				$this->openCommand = '\cd {{path}} && $SHELL';
 				if(substr(getenv('SHELL'), -3) === 'zsh'){
 					$this->openCommand .= ' -i';
 				}else{
@@ -261,7 +261,7 @@ class BaseProj{
 	*/
 	public function getTypes(){
 		return explode("\n", $this->shell->run([
-			'command'=> 'ls -1 ' . escapeshellarg($this->templatePath),
+			'command'=> '\ls -1 ' . escapeshellarg($this->templatePath),
 			'interactive'=> false,
 		]));
 	}
@@ -278,7 +278,7 @@ class BaseProj{
 			if(!$path){
 				throw new Exception("BaseProject::getProjectRoot(): pwd path not found");
 			}
-			$path = $this->shell->run('cd ' . $path . ' && git rev-parse --show-toplevel 2> /dev/null || echo ""');
+			$path = $this->shell->run('\cd ' . $path . ' && \git rev-parse --show-toplevel 2> /dev/null || echo ""');
 			if(!$path){
 				throw new Exception("BaseProject::getProjectRoot(): Project root not found");
 			}
@@ -296,7 +296,7 @@ class BaseProj{
 			return false;
 		}
 		$path = realpath($name);
-		return $path && $this->shell->run('cd ' . $path . ' && git rev-parse --is-inside-work-tree 2> /dev/null || echo "false"') === 'true';
+		return $path && $this->shell->run('\cd ' . $path . ' && \git rev-parse --is-inside-work-tree 2> /dev/null || echo "false"') === 'true';
 	}
 	protected function getTmpName(){
 		return '_tmp' . date('Ymd-His') . '-' . ++$this->tmpIncrement;
