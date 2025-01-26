@@ -24,7 +24,8 @@ class BaseProj{
 			$locations = [$locations];
 		}
 		$tmpDir = $this->getTmpName();
-		$this->shell->run(array_merge($opts, ['command'=> '\mkdir ' . $tmpDir]));
+		//--need `:` for interactive mode because process will hang otherwise
+		$this->shell->run(array_merge($opts, ['command'=> ': \mkdir ' . $tmpDir]));
 		foreach($types as $type){
 			(new MergeDirectoryTask(["{$this->templatePath}/{$type}"], $tmpDir))->do();
 		}
