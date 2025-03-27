@@ -12,6 +12,7 @@ class BaseProj{
 	protected $templatePath = __DIR__ . '/../templates';
 	protected $shell;
 	protected $tmpIncrement = 0;
+	protected $viewer = '${PAGER:-less}'; //--command for `view()` method
 	public function __construct(ShellRunner $shell = null, $opts = []){
 		$this->shell = $shell ?: new ShellRunner();
 		foreach($opts as $key=> $value){
@@ -251,6 +252,17 @@ class BaseProj{
 			$command = escapeshellcmd('git ' . $command);
 		}
 		return $this->run($name, $command);
+	}
+
+	/*
+	Method: view
+	View a project's file.
+	*/
+	public function view($name, $file){
+		return $this->run($name, [
+			'command'=> $this->viewer. ' ' . escapeshellarg($file),
+			'interactive'=> true,
+		]);
 	}
 
 	/*=====
