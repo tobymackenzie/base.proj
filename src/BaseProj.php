@@ -265,6 +265,23 @@ class BaseProj{
 		]);
 	}
 
+	/*
+	Method: viewFirst
+	View first project file found
+	 */
+	public function viewFirst($name, array $files){
+		foreach($files as $file){
+			if($this->has($name. '/' . $file)){
+				$match = $file;
+				break;
+			}
+		}
+		if(!isset($match)){
+			$match = $files[0];
+		}
+		return $this->view($name, $match);
+	}
+
 	/*=====
 	==templates
 	=====*/

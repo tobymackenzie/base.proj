@@ -13,6 +13,7 @@ class ViewCommand extends Command{
 	const EXPANSIONS = [
 		'license'=> 'license.md',
 		'readme'=> 'readme.md',
+		'todo'=> ['todo.md', 'do.md'],
 	];
 	static public $defaultName = 'view';
 	protected function configure(){
@@ -39,9 +40,17 @@ class ViewCommand extends Command{
 		foreach($projects as $project){
 			if($this->baseProj->has($project)){
 				if($input->getOption('edit')){
-					$this->baseProj->edit($project, $file);
+					if(is_array($file)){
+						$this->baseProj->editFirst($project, $file);
+					}else{
+						$this->baseProj->edit($project, $file);
+					}
 				}else{
-					$this->baseProj->view($project, $file);
+					if(is_array($file)){
+						$this->baseProj->viewFirst($project, $file);
+					}else{
+						$this->baseProj->view($project, $file);
+					}
 				}
 			}else{
 				throw new Exception("Project \"{$project}\" not found");
