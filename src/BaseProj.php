@@ -159,6 +159,9 @@ class BaseProj{
 			}else{
 				$command = str_replace('{{path}}', $path, $command);
 			}
+			if(strpos($command, '{{name}}') !== false){
+				$command = str_replace('{{name}}', $name, $command);
+			}
 			$opts = [
 				'command'=> $command,
 			];
