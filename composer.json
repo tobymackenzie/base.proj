@@ -20,10 +20,10 @@
 	},
 	"require": {
 		"php": ">=7.2",
-		"symfony/yaml": "^5",
+		"symfony/yaml": "^5||^6",
 		"tjm/file-merge-tasks": "^0",
 		"tjm/shell-runner": "^0",
-		"tjm/sy-console": "^2"
+		"tjm/sy-console": "^3"
 	},
 	"require-dev": {
 		"tjm/dev": "*"

@@ -13,7 +13,7 @@ class BaseProj{
 	protected $shell;
 	protected $tmpIncrement = 0;
 	protected $viewer = '${PAGER:-less}'; //--command for `view()` method
-	public function __construct(ShellRunner $shell = null, $opts = []){
+	public function __construct(?ShellRunner $shell = null, $opts = []){
 		$this->shell = $shell ?: new ShellRunner();
 		foreach($opts as $key=> $value){
 			$this->$key = $value;
