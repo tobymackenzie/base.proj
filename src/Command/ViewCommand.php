@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'view', aliases: ViewCommand::ALIASES)]
 class ViewCommand extends Command{
-	const ALIASES = ['license', 'readme'];
+	const ALIASES = ['v', 'license', 'readme'];
 	const EXPANSIONS = [
 		'license'=> 'license.md',
 		'readme'=> 'readme.md',
@@ -28,7 +28,7 @@ class ViewCommand extends Command{
 	protected function execute(InputInterface $input, OutputInterface $output){
 		$projects = $input->getArgument('projects');
 		$called = $input->getArgument('command');
-		if(in_array($called, static::ALIASES)){
+		if(in_array($called, static::ALIASES) && $called !== 'v'){
 			$file = $called;
 			array_unshift($projects, $input->getArgument('file'));
 		}else{
