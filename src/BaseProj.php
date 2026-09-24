@@ -139,7 +139,7 @@ class BaseProj{
 		}
 		if(empty($command)){
 			if(empty($this->openCommand)){
-				$shell = getenv('TJM_SHELL') ?: getenv('SHELL');
+				$shell = getenv('TJMSHELL') ?: getenv('SHELL');
 				$this->openCommand = '\cd {{path}} && ' . $shell;
 				if(substr($shell, -3) === 'zsh'){
 					$this->openCommand .= ' -i';
